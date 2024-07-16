@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Captioning Annotation Tool</title>
+    <style>
+        body { display: flex; }
+        #image-list-container { width: 200px; overflow-y: auto; border-right: 1px solid #ccc; padding: 10px; display: flex; flex-direction: column; resize: horizontal; overflow: auto; }
+        #image-list { flex: 1; }
+        #pagination { display: flex; justify-content: space-between; padding: 5px; }
+        #image-viewer { flex: 1; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        #image { max-width: 100%; max-height: 80vh; object-fit: contain; }
+        .annotated { color: gray; }
+        .selected { background-color: lightblue; }
+        .image-item:hover { background-color: lightgray; cursor: pointer; }
+        button { padding: 5px 10px; margin-top: 10px; }
+        #caption-input {
+            width: 70%; /* 设置输入框宽度为父容器宽度的50% */
+            min-height: 3em; /* 设置输入框的最小高度为3行文本高度 */
+            resize: vertical; /* 允许用户调整输入框的高度 */
+            padding: 5px; /* 添加一些内边距 */
+            font-size: 16px; /* 设置字体大小 */
+            margin-top: 20px;
+        }
+        .resizer {
+            width: 5px;
+            cursor: ew-resize;
+            padding: 4px;
+            background-color: #f4f4f4;
+            border-right: 1px solid #ccc;
+        }
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+        @keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+        @-webkit-keyframes fadeout {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: 0; opacity: 0; }
+        }
+        @keyframes fadeout {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: 0; opacity: 0; }
+        }
+        #progress-bar {
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="image-list-container">
+        <div id="image-list"></div>
+        <div id="pagination">
+            <button onclick="previousPage()">上一页</button>
+            <button onclick="nextPage()">下一页</button>
+        </div>
+        <div id="progress-bar"></div>
+    </div>
+    <div class="resizer" id="dragMe"></div>
+    <div id="image-viewer">
+        <img id="image" src="" alt="">
+        <input type="text" id="caption-input" placeholder="输入标签">
+        <button onclick="submitAnnotation()">提交</button>
+    </div>
+    <div id="toast">已保存</div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
